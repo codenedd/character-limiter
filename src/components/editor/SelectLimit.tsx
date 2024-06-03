@@ -1,10 +1,13 @@
 "use client";
-import React, { useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { FaDiscord } from "react-icons/fa";
 import { FaTwitter } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
 import { FaInstagram } from "react-icons/fa";
+import { FaLinkedin } from "react-icons/fa";
+import { FaTiktok } from "react-icons/fa";
+import { FaPinterest } from "react-icons/fa";
 
 const options = [
   { icon: <FaTwitter />, label: "Twitter Post", value: "280" },
@@ -12,22 +15,49 @@ const options = [
   { icon: <FaFacebook />, label: "Facebook Post", value: "63206" },
   { icon: <FaInstagram />, label: "Instagram Post", value: "2200" },
   { icon: <FaDiscord />, label: "Discord Message", value: "2000" },
+  { icon: <FaLinkedin />, label: "LinkedIn", value: "3000" },
+  { icon: <FaTiktok />, label: "TikTok (video description)", value: "2200" },
+  { icon: <FaPinterest />, label: "Pinterest", value: "500" },
   { label: "Custom Limit", value: "custom" },
+  { label: "Unlimited", value: "unlimited" },
 ];
 
 interface Props {
-  onChange: (value: number) => void;
+  onChange: (value: number | null) => void;
 }
 
 const SelectLimit = ({ onChange }: Props) => {
+  const refList = useRef<HTMLDivElement>(null);
   const [selectValue, setSelectValue] = useState(options[0]);
   const [selectOpen, setSelectOpen] = useState(false);
   const [customLimit, setCustomLimit] = useState(100);
 
+  const handleClickOutside = (e: MouseEvent) => {
+    if (refList.current && !refList.current.contains(e.target as Node | null)) {
+      setSelectOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   function setNewSelectedValue(index: number) {
     setSelectValue(options[index]);
     setSelectOpen(false);
-    onChange(options[index].value === "custom" ? customLimit : Number(options[index].value));
+    switch (options[index].value) {
+      case "custom":
+        onChange(customLimit);
+        break;
+      case "unlimited":
+        onChange(null);
+        break;
+      default:
+        onChange(Number(options[index].value));
+    }
   }
 
   function setNewCustomLimit(customLimit: number) {
@@ -36,7 +66,7 @@ const SelectLimit = ({ onChange }: Props) => {
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div ref={refList} className="flex flex-col gap-4">
       <div className="relative">
         <div
           onClick={() => setSelectOpen(!selectOpen)}
@@ -51,7 +81,7 @@ const SelectLimit = ({ onChange }: Props) => {
           <div className="border-2 bg-background-color border-primary-color absolute top-16 w-full max-h-64 overflow-auto">
             {options.map((option, index) => (
               <span onClick={() => setNewSelectedValue(index)} key={index} id={`${index}`} className="flex gap-2 items-center p-4 hover:bg-secondary-color cursor-pointer">
-                <span className="text-2xl">{option.icon}</span> {option.label} ({option.value} characters)
+                <span className="text-2xl">{option.icon}</span> {option.label} {isNaN(Number(option.value)) ? `` : `(${option.value} characters)`}
               </span>
             ))}
           </div>

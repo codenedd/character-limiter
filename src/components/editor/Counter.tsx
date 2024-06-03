@@ -7,16 +7,22 @@ interface Props {
 const Counter = ({ text }: Props) => {
   const words = handleText(text);
   function handleText(text: string) {
-    const words = text.toLowerCase().split(" ");
+    const words = text
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, " ")
+      .replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, "")
+      .split(" ");
     if (words.length === 1 && words[0] === "") return [];
     return words;
   }
+
   return (
     <div className="flex flex-col lg:flex-row border-2 border-primary-color">
       <CounterElement label="Characters" value={text.length} />
       <CounterElement label="Words" value={words.length} />
       <CounterElement label="Unique words" value={new Set(words).size} />
-      <CounterElement label="Paragraphs" value={text.length ? text.split("\n").length : 0} />
+      <CounterElement label="Paragraphs" value={text.length ? text.split("\n").filter((txt) => txt !== "").length : 0} />
     </div>
   );
 };

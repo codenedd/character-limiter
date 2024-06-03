@@ -1,12 +1,13 @@
 "use client";
 import { EditorSettingsTypes } from "@/utils/types";
 import React, { useRef, useState } from "react";
+import { FaInfinity } from "react-icons/fa";
 
 const DEFAULT_TEXTAREA_ROWS = 12;
 
 interface Props {
   value: string;
-  limit: number;
+  limit: number | null;
   settings: EditorSettingsTypes;
   onChange: (value: string) => void;
 }
@@ -29,8 +30,8 @@ const Textarea = ({ value, limit, settings, onChange }: Props) => {
     }
   }
 
-  const textInLimit = value.slice(0, limit);
-  const textOverLimit = value.slice(limit);
+  const textInLimit = value.slice(0, limit ?? value.length);
+  const textOverLimit = limit ? value.slice(limit) : "";
 
   return (
     <div className="border-2 border-primary-color focus-within:border-secondary-color">
@@ -43,15 +44,18 @@ const Textarea = ({ value, limit, settings, onChange }: Props) => {
           rows={DEFAULT_TEXTAREA_ROWS}
           className="bg-transparent p-2 outline-none w-full resize-none overflow-hidden h-full"
           placeholder="Type here..."
-          maxLength={settings.allowOverlength ? undefined : limit}
+          maxLength={!limit || settings.allowOverlength ? undefined : limit}
         ></textarea>
         <div className="absolute p-2 w-full top-0 -z-50 break-words">
           {makeTextBackground(textInLimit, settings.coloredTextBackground ? "bg-green-800" : "bg-transparent")}
           {textOverLimit && makeTextBackground(textOverLimit, settings.coloredTextBackground ? "bg-red-800" : "bg-transparent")}
         </div>
       </div>
-      <div style={{ color: length >= limit ? "red" : " " }} className="text-right px-1 py-2">
-        {length}/{limit} {textOverLimit.length ? <span className="text-red-600">(-{textOverLimit.length})</span> : ""}
+      <div style={{ color: limit && length >= limit ? "red" : " " }} className="text-right px-1 py-2">
+        <span className="flex items-center justify-end px-1">
+          {length}/{limit ? limit : <FaInfinity />}
+        </span>{" "}
+        {textOverLimit.length ? <span className="text-red-600">(-{textOverLimit.length})</span> : ""}
       </div>
     </div>
   );

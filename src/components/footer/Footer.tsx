@@ -4,14 +4,18 @@ import { BsDot } from "react-icons/bs";
 
 const Footer = () => {
   return (
-    <footer className="flex flex-col gap-2 py-2 text-center">
-      <div className="flex gap-2 justify-center items-center">
+    <footer className="flex flex-col py-2 text-center">
+      <div className="flex gap-2 justify-center items-center px-2">
         <Link className="hover:text-primary-color" href={"/"}>
-          Project Repository
+          Character Limiter
         </Link>
         <BsDot />
         <Link className="hover:text-primary-color" href={"how-it-works"}>
           How it works?
+        </Link>
+        <BsDot />
+        <Link className="hover:text-primary-color" href={"https://github.com/codenedd/character-limiter"}>
+          Repository
         </Link>
       </div>
       <div>codened &copy; 2024</div>

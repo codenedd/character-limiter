@@ -7,9 +7,10 @@ import EditorSettings from "./EditorSettings";
 import { EditorSettingsTypes } from "@/utils/types";
 
 const TextEditor = () => {
-  const [currentLimit, setCurrentLimit] = useState(280);
+  const [currentLimit, setCurrentLimit] = useState<number | null>(280);
   const [text, setText] = useState("");
   const [editorSettings, setEditorSettings] = useState<EditorSettingsTypes>({ allowOverlength: false, coloredTextBackground: true });
+
   return (
     <div className="flex flex-col p-4 max-w-screen-lg mx-auto gap-4">
       <h2 className="text-2xl">Enter your text below</h2>
