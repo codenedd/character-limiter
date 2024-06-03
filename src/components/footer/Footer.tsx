@@ -4,7 +4,7 @@ import { BsDot } from "react-icons/bs";
 
 const Footer = () => {
   return (
-    <footer className="flex flex-col py-2 text-center">
+    <footer className="flex flex-col py-2 text-center text-xs md:text-lg">
       <div className="flex gap-2 justify-center items-center px-2">
         <Link className="hover:text-primary-color" href={"/"}>
           Character Limiter
