@@ -32,9 +32,14 @@ const SelectLimit = ({ onChange }: Props) => {
   const [selectOpen, setSelectOpen] = useState(false);
   const [customLimit, setCustomLimit] = useState(100);
 
+  function handleListOpen(value: boolean) {
+    document.body.style.overflow = value ? "hidden" : "auto";
+    setSelectOpen(value);
+  }
+
   const handleClickOutside = (e: MouseEvent) => {
     if (refList.current && !refList.current.contains(e.target as Node | null)) {
-      setSelectOpen(false);
+      handleListOpen(false);
     }
   };
 
@@ -47,7 +52,7 @@ const SelectLimit = ({ onChange }: Props) => {
 
   function setNewSelectedValue(index: number) {
     setSelectValue(options[index]);
-    setSelectOpen(false);
+    handleListOpen(false);
     switch (options[index].value) {
       case "custom":
         onChange(customLimit);
@@ -69,7 +74,7 @@ const SelectLimit = ({ onChange }: Props) => {
     <div ref={refList} className="flex flex-col gap-4">
       <div className="relative">
         <div
-          onClick={() => setSelectOpen(!selectOpen)}
+          onClick={() => handleListOpen(!selectOpen)}
           className="flex justify-between select-none items-center p-4 border-2 border-primary-color cursor-pointer hover:border-secondary-color"
         >
           <span className="flex items-center gap-2">
@@ -78,13 +83,24 @@ const SelectLimit = ({ onChange }: Props) => {
           <IoMdArrowDropdown className="text-lg transition-all" style={{ transform: selectOpen ? "rotate(180deg)" : "rotate(0deg)" }} />
         </div>
         {selectOpen && (
-          <div className="border-2 bg-background-color border-primary-color absolute top-16 w-full max-h-64 overflow-auto">
-            {options.map((option, index) => (
-              <span onClick={() => setNewSelectedValue(index)} key={index} id={`${index}`} className="flex gap-2 items-center p-4 hover:bg-secondary-color cursor-pointer">
-                <span className="text-2xl">{option.icon}</span> {option.label} {isNaN(Number(option.value)) ? `` : `(${option.value} characters)`}
-              </span>
-            ))}
-          </div>
+          <>
+            <div className="border-2 bg-background-color border-primary-color hidden lg:block lg:absolute lg:top-16 w-full lg:max-h-64 overflow-auto">
+              {options.map((option, index) => (
+                <span onClick={() => setNewSelectedValue(index)} key={index} id={`${index}`} className="flex gap-2 items-center p-4 hover:bg-secondary-color cursor-pointer">
+                  <span className="text-2xl">{option.icon}</span> {option.label} {isNaN(Number(option.value)) ? `` : `(${option.value} characters)`}
+                </span>
+              ))}
+            </div>
+            <div className="lg:hidden fixed top-0 left-0 w-full h-full p-2 bg-black/90 flex items-center">
+              <div className="border-2 bg-background-color border-primary-color w-full max-h-full overflow-auto">
+                {options.map((option, index) => (
+                  <span onClick={() => setNewSelectedValue(index)} key={index} id={`${index}`} className="flex gap-2 items-center p-4 hover:bg-secondary-color cursor-pointer">
+                    <span className="text-2xl">{option.icon}</span> {option.label} {isNaN(Number(option.value)) ? `` : `(${option.value} characters)`}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </>
         )}
       </div>
       {selectValue.value === "custom" && (
