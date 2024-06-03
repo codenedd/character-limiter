@@ -15,6 +15,10 @@ body {
   height: 100vh;
 }
 
+body:has(.modal) {
+  overflow: hidden;
+}
+
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--primary-color) var(--background-color);

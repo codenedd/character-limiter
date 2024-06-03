@@ -33,7 +33,6 @@ const SelectLimit = ({ onChange }: Props) => {
   const [customLimit, setCustomLimit] = useState(100);
 
   function handleListOpen(value: boolean) {
-    document.body.style.overflow = value ? "hidden" : "auto";
     setSelectOpen(value);
   }
 
@@ -91,7 +90,7 @@ const SelectLimit = ({ onChange }: Props) => {
                 </span>
               ))}
             </div>
-            <div className="lg:hidden fixed top-0 left-0 w-full h-full p-2 bg-black/90 flex items-center">
+            <div className="modal lg:hidden fixed top-0 left-0 w-full h-full p-2 bg-black/90 flex items-center">
               <div className="border-2 bg-background-color border-primary-color w-full max-h-full overflow-auto">
                 {options.map((option, index) => (
                   <span onClick={() => setNewSelectedValue(index)} key={index} id={`${index}`} className="flex gap-2 items-center p-4 hover:bg-secondary-color cursor-pointer">
