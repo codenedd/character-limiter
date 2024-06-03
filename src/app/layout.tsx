@@ -19,6 +19,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <meta name="google-site-verification" content="nOMubqmKPxq9k-mwfByLzn9rMV_8mZfc_ru0o_QAAVM" />
+      </head>
       <body className={`flex flex-col ${inter.className}`}>
         <Header />
         <main className="flex-1">{children}</main>
