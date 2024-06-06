@@ -51,7 +51,7 @@ const Textarea = ({ value, limit, settings, onChange }: Props) => {
           {textOverLimit && makeTextBackground(textOverLimit, settings.coloredTextBackground ? "bg-red-800" : "bg-transparent")}
         </div>
       </div>
-      <div style={{ color: limit && length >= limit ? "red" : " " }} className="text-right px-1 py-2">
+      <div style={{ color: limit && length >= limit ? "red" : " " }} className="text-right px-1 py-2 flex justify-end">
         <span className="flex items-center justify-end px-1">
           {length}/{limit ? limit : <FaInfinity />}
         </span>{" "}
