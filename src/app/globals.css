@@ -15,10 +15,6 @@ body {
   height: 100vh;
 }
 
-body:has(.modal) {
-  overflow: hidden;
-}
-
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--primary-color) var(--background-color);
@@ -43,5 +39,11 @@ body:has(.modal) {
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+}
+
+@media (min-width: 1024px) {
+  body:has(.modal) {
+    overflow: hidden;
   }
 }
